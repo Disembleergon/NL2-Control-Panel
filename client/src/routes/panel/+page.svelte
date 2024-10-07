@@ -1,17 +1,9 @@
 <script lang="ts">
-  import { HOSTNAME_STORAGE_KEY, PORT } from "$lib/globals";
-  import { onMount } from "svelte";
   import { goto } from "$app/navigation";
   import DispatchButton from "$lib/components/DispatchButton.svelte";
   import IndustrialSwitch from "$lib/components/IndustrialSwitch.svelte";
   import KeySwitch from "$lib/components/KeySwitch.svelte";
   import EmergencyButton from "$lib/components/EmergencyButton.svelte";
-
-  let hostname = "";
-  onMount(async () => {
-    hostname = sessionStorage.getItem(HOSTNAME_STORAGE_KEY)!;
-    if (hostname === null) await goto("/");
-  });
 
   async function sendRequest(event: any) {
     let data: PostData = {
@@ -20,11 +12,10 @@
     };
 
     try {
-      await fetch(`http://${hostname}:${PORT}`, {
+      await fetch("/", {
         method: "POST",
         body: JSON.stringify(data),
-        headers: { "Content-Type": "application/json" },
-        mode: "cors",
+        headers: { "Content-Type": "application/json" }
       });
     } catch {
       alert("Couldn't connect to the server");
