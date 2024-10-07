@@ -1,14 +1,7 @@
 <script lang="ts">
   import logo from "$lib/assets/NL2-Control-Panel-Logo.png";
   import arrow from "$lib/assets/arrow_right.svg";
-  import { onMount } from "svelte";
   import { goto } from "$app/navigation";
-  import { PORT, HOSTNAME_STORAGE_KEY } from "$lib/globals";
-
-  let hostname = "";
-  onMount(() => {
-    hostname = document.location.hostname;
-  });
 
   async function connect() {
     let data: PostData = {
@@ -17,14 +10,12 @@
     };
 
     try {
-      await fetch(`http://${hostname}:${PORT}`, {
+      await fetch("/", {
         method: "POST",
         body: JSON.stringify(data),
-        headers: { "Content-Type": "application/json" },
-        mode: "cors",
+        headers: { "Content-Type": "application/json" }
       });
 
-      sessionStorage.setItem(HOSTNAME_STORAGE_KEY, hostname);
       await goto("/panel");
     } catch {
       alert("Couldn't connect to server");
