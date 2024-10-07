@@ -1,11 +1,13 @@
+use local_ip_address::local_ip;
+
 const PORT: u16 = 3000;
 
 fn main() {
     // TODO: pretty banner with short explanation
-    // TODO: show external ip address
-    println!("Server listening on localhost:{PORT}");
+    let ip_address = local_ip().unwrap();
+    println!("Server listening on http://{ip_address}:{PORT}/");
 
-    rouille::start_server(format!("127.0.0.1:{PORT}"), move |request| {
+    rouille::start_server(format!("0.0.0.0:{PORT}"), move |request| {
         {
             let response = rouille::match_assets(request, "static");
             if response.is_success() {
