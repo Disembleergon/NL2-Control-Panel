@@ -1,6 +1,27 @@
 use local_ip_address::local_ip;
+use rouille::{Request, Response};
+use serde::Deserialize;
+
+#[derive(Deserialize)]
+#[allow(non_snake_case)]
+struct PostRequestBody {
+    action: String,
+    connectionTest: bool,
+}
 
 const PORT: u16 = 3000;
+
+fn post_handler(req: &Request) -> Response {
+    let body: PostRequestBody = rouille::try_or_404!(rouille::input::json_input(req));
+    if body.connectionTest {
+        println!("Client connected!");
+        return Response::empty_204();
+    }
+
+    // TODO key press
+
+    Response::empty_204()
+}
 
 fn main() {
     // TODO: pretty banner with short explanation
@@ -26,8 +47,7 @@ fn main() {
             },
 
             (POST) (/) => {
-                // TODO: press keys according to specified action
-                rouille::Response::text("key tap")
+                post_handler(request)
             },
 
             _ => {
