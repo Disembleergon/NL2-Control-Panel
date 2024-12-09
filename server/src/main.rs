@@ -1,6 +1,9 @@
+use keymap::ActionMap;
 use local_ip_address::local_ip;
 use rouille::{Request, Response};
 use serde::Deserialize;
+
+mod keymap;
 
 #[derive(Deserialize)]
 #[allow(non_snake_case)]
@@ -11,20 +14,24 @@ struct PostRequestBody {
 
 const PORT: u16 = 3000;
 
-fn post_handler(req: &Request) -> Response {
+fn post_handler(req: &Request, action_map: &ActionMap) -> Response {
     let body: PostRequestBody = rouille::try_or_404!(rouille::input::json_input(req));
     if body.connectionTest {
         println!("Client connected!");
         return Response::empty_204();
     }
 
-    // TODO key press
+    let key = action_map.get_key_by_action(body.action.as_str());
+    // TODO simulate key press
 
     Response::empty_204()
 }
 
+// TODO replace panic with clean exit(1)
+
 fn main() {
     // TODO: pretty banner with short explanation
+    let action_map = ActionMap::new("actions.json");
     let ip_address = local_ip().unwrap();
     println!("Server listening on http://{ip_address}:{PORT}/");
 
@@ -47,7 +54,7 @@ fn main() {
             },
 
             (POST) (/) => {
-                post_handler(request)
+                post_handler(request, &action_map)
             },
 
             _ => {
