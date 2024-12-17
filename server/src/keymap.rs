@@ -99,6 +99,18 @@ impl ActionMap {
             "left" => Key::LeftArrow,
             "right" => Key::RightArrow,
             "space" => Key::Space,
+            "f1" => Key::F1,
+            "f2" => Key::F2,
+            "f3" => Key::F3,
+            "f4" => Key::F4,
+            "f5" => Key::F5,
+            "f6" => Key::F6,
+            "f7" => Key::F7,
+            "f8" => Key::F8,
+            "f9" => Key::F9,
+            "f10" => Key::F10,
+            "f11" => Key::F11,
+            "f12" => Key::F12,
             _ => self.numpad_keys(keyname),
         }
     }
