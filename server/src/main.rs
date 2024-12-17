@@ -1,3 +1,6 @@
+use std::{thread, time::Duration};
+
+use enigo::{Direction, Enigo, Keyboard, Settings};
 use keymap::ActionMap;
 use local_ip_address::local_ip;
 use rouille::{Request, Response};
@@ -21,8 +24,12 @@ fn post_handler(req: &Request, action_map: &ActionMap) -> Response {
         return Response::empty_204();
     }
 
+    let mut enigo = Enigo::new(&Settings::default()).unwrap();
     let key = action_map.get_key_by_action(body.action.as_str());
-    // TODO simulate key press
+
+    let _ = enigo.key(key, Direction::Press);
+    thread::sleep(Duration::from_millis(300));
+    let _ = enigo.key(key, Direction::Release);
 
     Response::empty_204()
 }
