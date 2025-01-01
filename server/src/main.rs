@@ -1,4 +1,4 @@
-use std::{thread, time::Duration};
+use std::{process::exit, thread, time::Duration};
 
 use enigo::{Direction, Enigo, Keyboard, Settings};
 use keymap::ActionMap;
@@ -25,7 +25,12 @@ fn post_handler(req: &Request, action_map: &ActionMap) -> Response {
     }
 
     let mut enigo = Enigo::new(&Settings::default()).unwrap();
-    let key = action_map.get_key_by_action(body.action.as_str());
+    let key = match action_map.get_key_by_action(body.action.as_str()) {
+        Ok(k) => k,
+        Err(_) => {
+            exit(1);
+        }
+    };
 
     let _ = enigo.key(key, Direction::Press);
     thread::sleep(Duration::from_millis(300));
@@ -34,11 +39,15 @@ fn post_handler(req: &Request, action_map: &ActionMap) -> Response {
     Response::empty_204()
 }
 
-// TODO replace panic with clean exit(1)
-
 fn main() {
     // TODO: pretty banner with short explanation
-    let action_map = ActionMap::new("actions.json");
+    let action_map = match ActionMap::new("actions.json") {
+        Ok(m) => m,
+        Err(_) => {
+            exit(1);
+        }
+    };
+
     let ip_address = local_ip().unwrap();
     println!("Server listening on http://{ip_address}:{PORT}/");
 
