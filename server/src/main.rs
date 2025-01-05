@@ -1,5 +1,6 @@
 use std::{process::exit, thread, time::Duration};
 
+use color_print::cprint;
 use enigo::{Direction, Enigo, Keyboard, Settings};
 use keymap::ActionMap;
 use local_ip_address::local_ip;
@@ -40,8 +41,8 @@ fn post_handler(req: &Request, action_map: &ActionMap) -> Response {
 }
 
 fn main() {
-    std::print!(
-        "
+    cprint!(
+        "<#fff2e0>
 ███╗   ██╗██╗     ██████╗                                    
 ████╗  ██║██║     ╚════██╗                                   
 ██╔██╗ ██║██║      █████╔╝                                   
@@ -61,7 +62,7 @@ fn main() {
 ██║     ██║  ██║██║ ╚████║███████╗███████╗                   
 ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝                   
                                                              
-    "
+    </>"
     );
 
     let action_map = match ActionMap::new("actions.json") {

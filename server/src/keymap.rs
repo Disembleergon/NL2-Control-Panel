@@ -1,3 +1,4 @@
+use color_print::ceprintln;
 use enigo::Key;
 use std::{
     collections::HashMap,
@@ -9,7 +10,7 @@ use std::{
 /// ERROR HANDLING
 ///
 pub fn show_error(msg: &str) {
-    eprintln!("{}", msg);
+    ceprintln!("<red>{}</>", msg);
     let _ = io::stdin().read(&mut [0u8]).unwrap(); // wait for key press
 }
 ///
