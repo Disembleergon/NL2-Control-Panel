@@ -1,6 +1,45 @@
-use color_print::cprint;
-use crossterm::{terminal, terminal::ClearType, ExecutableCommand};
-use std::io;
+use color_print::{ceprintln, cprint};
+use crossterm::event::{read, Event};
+use crossterm::{cursor, terminal, terminal::ClearType, ExecutableCommand};
+use std::io::{self, Write};
+use std::thread;
+use std::time::Duration;
+
+//////////////////////////////////////////////////////////////////////
+//////////////////////////// public //////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+
+pub fn intro() {
+    print_banner();
+    for _ in 0..40 {
+        print!(".");
+        _ = io::stdout().flush();
+        thread::sleep(Duration::from_millis(50));
+    }
+    _ = clear_screen();
+    _ = io::stdout().execute(cursor::MoveTo(0, 1));
+}
+
+pub fn clear_screen() -> io::Result<()> {
+    _ = io::stdout().execute(terminal::Clear(ClearType::All))?;
+    Ok(())
+}
+
+pub fn show_error(msg: &str) -> io::Result<()> {
+    ceprintln!("<red>{}</>", msg);
+    println!("\npress <enter> to quit...");
+
+    // wait for key press
+    loop {
+        match read()? {
+            Event::Key(_) => return Ok(()),
+            _ => continue,
+        }
+    }
+}
+
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
 
 pub fn print_banner() {
     cprint!(
@@ -26,9 +65,4 @@ pub fn print_banner() {
                                                              
     </>"
     );
-}
-
-pub fn clear_screen() -> io::Result<()> {
-    _ = std::io::stdout().execute(terminal::Clear(ClearType::All))?;
-    Ok(())
 }

@@ -1,20 +1,6 @@
-use color_print::ceprintln;
+use crate::ui;
 use enigo::Key;
-use std::{
-    collections::HashMap,
-    fs::File,
-    io::{self, Read},
-};
-
-/////////////////////////////////////////////////////////////////////////
-/// ERROR HANDLING
-///
-pub fn show_error(msg: &str) {
-    ceprintln!("<red>{}</>", msg);
-    let _ = io::stdin().read(&mut [0u8]).unwrap(); // wait for key press
-}
-///
-////////////////////////////////////////////////////////////////////////
+use std::{collections::HashMap, fs::File, io::Read};
 
 pub struct ActionMap {
     map: HashMap<String, String>,
@@ -25,7 +11,7 @@ impl ActionMap {
         let mut json_file = match File::open(path) {
             Ok(f) => f,
             Err(_) => {
-                show_error("\nFailed to open configuration file actions.json!\nMake sure it is in the same folder as the executable.\nIf you don't know what to do, redownload the software from the project page.");
+                _ = ui::show_error("Failed to open configuration file actions.json!\nMake sure it is in the same folder as the executable.\nIf you don't know what to do, redownload the software from the project page.");
                 return Err(());
             }
         };
@@ -37,7 +23,9 @@ impl ActionMap {
             map: match serde_json::from_str(buffer.as_str()) {
                 Ok(m) => m,
                 Err(_) => {
-                    show_error("\nFailed to parse JSON data. There is something wrong with the JSON syntax!");
+                    _ = ui::show_error(
+                        "Failed to parse JSON data. There is something wrong with the JSON syntax!",
+                    );
                     return Err(());
                 }
             },
@@ -58,9 +46,9 @@ impl ActionMap {
             "numpad_8" => Ok(Key::Other(0xffb8)),
             "numpad_9" => Ok(Key::Other(0xffb9)),
             _ => {
-                show_error(
+                _ = ui::show_error(
                     format!(
-                        "\n{} does not exist!\nPlease refer to the key table on the project page!",
+                        "{} does not exist!\nPlease refer to the key table on the project page!",
                         keyname
                     )
                     .as_str(),
@@ -84,9 +72,9 @@ impl ActionMap {
             "numpad_8" => Ok(Key::Other(0x68)),
             "numpad_9" => Ok(Key::Other(0x69)),
             _ => {
-                show_error(
+                _ = ui::show_error(
                     format!(
-                        "\n{} does not exist!\nPlease refer to the key table on the project page!",
+                        "{} does not exist!\nPlease refer to the key table on the project page!",
                         keyname
                     )
                     .as_str(),
@@ -124,7 +112,7 @@ impl ActionMap {
         let keyname = match self.map.get(action) {
             Some(v) => v,
             None => {
-                show_error(format!("\nThe case for <{}> is not covered in actions.json!\nPlease complete the configuration file or redownload the software from the project page.", action).as_str());
+                _ = ui::show_error(format!("The case for <{}> is not covered in actions.json!\nPlease complete the configuration file or redownload the software from the project page.", action).as_str());
                 return Err(());
             }
         };

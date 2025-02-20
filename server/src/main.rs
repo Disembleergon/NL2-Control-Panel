@@ -41,7 +41,7 @@ fn post_handler(req: &Request, action_map: &ActionMap) -> Response {
 }
 
 fn main() {
-    ui::print_banner();
+    ui::intro();
 
     // read in the config of actions.json
     let action_map = match ActionMap::new("actions.json") {
