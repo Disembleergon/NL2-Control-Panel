@@ -1,6 +1,5 @@
 use std::{process::exit, thread, time::Duration};
 
-use color_print::cprint;
 use enigo::{Direction, Enigo, Keyboard, Settings};
 use keymap::ActionMap;
 use local_ip_address::local_ip;
@@ -8,6 +7,7 @@ use rouille::{Request, Response};
 use serde::Deserialize;
 
 mod keymap;
+mod ui;
 
 #[derive(Deserialize)]
 #[allow(non_snake_case)]
@@ -41,30 +41,9 @@ fn post_handler(req: &Request, action_map: &ActionMap) -> Response {
 }
 
 fn main() {
-    cprint!(
-        "<#fff2e0>
-███╗   ██╗██╗     ██████╗                                    
-████╗  ██║██║     ╚════██╗                                   
-██╔██╗ ██║██║      █████╔╝                                   
-██║╚██╗██║██║     ██╔═══╝                                    
-██║ ╚████║███████╗███████╗                                   
-╚═╝  ╚═══╝╚══════╝╚══════╝                                   
- ██████╗ ██████╗ ███╗   ██╗████████╗██████╗  ██████╗ ██╗     
-██╔════╝██╔═══██╗████╗  ██║╚══██╔══╝██╔══██╗██╔═══██╗██║     
-██║     ██║   ██║██╔██╗ ██║   ██║   ██████╔╝██║   ██║██║     
-██║     ██║   ██║██║╚██╗██║   ██║   ██╔══██╗██║   ██║██║     
-╚██████╗╚██████╔╝██║ ╚████║   ██║   ██║  ██║╚██████╔╝███████╗
- ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚══════╝
-██████╗  █████╗ ███╗   ██╗███████╗██╗                        
-██╔══██╗██╔══██╗████╗  ██║██╔════╝██║                        
-██████╔╝███████║██╔██╗ ██║█████╗  ██║                        
-██╔═══╝ ██╔══██║██║╚██╗██║██╔══╝  ██║                        
-██║     ██║  ██║██║ ╚████║███████╗███████╗                   
-╚═╝     ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝                   
-                                                             
-    </>"
-    );
+    ui::print_banner();
 
+    // read in the config of actions.json
     let action_map = match ActionMap::new("actions.json") {
         Ok(m) => m,
         Err(_) => {
