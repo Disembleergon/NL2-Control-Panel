@@ -1,7 +1,7 @@
 # No Limits 2 Control Panel 🎮
 
-Control your No Limits 2 or RideSims roller coasters from other devices!<br/>
-Supports <strong>Windows</strong> and <strong>Linux</strong>.
+Control your No Limits 2 or RideSims roller coasters from your mobile devices!<br/>
+Install it on <strong>Windows</strong> or <strong>Linux</strong> and use it on <strong>any device via your web browser</strong>.
 
 ![Control Panel Preview](/controlPanel_preview.png)
 
@@ -13,14 +13,16 @@ In the settings of No Limits 2, go to controls and look for "dispatch". There yo
 
 ## Installation 🧑‍💻
 
-1. [Download the software](https://github.com/Disembleergon/NL2-Control-Panel/releases/latest)
-2. Extract the folder
+1. [download the software](https://github.com/Disembleergon/NL2-Control-Panel/releases/latest)
+2. extract the folder
 3. double click the executable (NL2-Control-Panel.exe)
+4. follow the instructions
 
 ## Customization 🖌️
 
-You can edit the keys that get pressed on each specific event.<br/>
-This enables you to use the panel for RideSims as well. Those are the available keys:
+You can edit the keys that get pressed on each specific event by editing the <strong><i>actions.json</i></strong> file.<br/>
+This enables you to use the panel for RideSims as well.<br/>
+Those are the available keys:
 
 | Key                | JSON string             |
 | ------------------ | ----------------------- |
