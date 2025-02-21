@@ -1,5 +1,6 @@
 use std::{process::exit, thread, time::Duration};
 
+use color_print::cprintln;
 use enigo::{Direction, Enigo, Keyboard, Settings};
 use keymap::ActionMap;
 use local_ip_address::local_ip;
@@ -52,7 +53,9 @@ fn main() {
     };
 
     let ip_address = local_ip().unwrap();
-    println!("Server listening on http://{ip_address}:{PORT}/");
+    println!("Server running");
+    cprintln!("<#0398fc>http://{}:{}/</>", ip_address, PORT);
+    ui::show_instructions();
 
     rouille::start_server(format!("0.0.0.0:{PORT}"), move |request| {
         {

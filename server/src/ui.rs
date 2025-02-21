@@ -1,4 +1,4 @@
-use color_print::{ceprintln, cprint};
+use color_print::ceprintln;
 use crossterm::event::{read, Event};
 use crossterm::{cursor, terminal, terminal::ClearType, ExecutableCommand};
 use std::io::{self, Write};
@@ -10,7 +10,7 @@ use std::time::Duration;
 //////////////////////////////////////////////////////////////////////
 
 pub fn intro() {
-    print_banner();
+    print!("{}", TITLE_BANNER);
     for _ in 0..40 {
         print!(".");
         _ = io::stdout().flush();
@@ -38,12 +38,14 @@ pub fn show_error(msg: &str) -> io::Result<()> {
     }
 }
 
+pub fn show_instructions() {
+    print!("{}", INSTRUCTIONS);
+}
+
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 
-pub fn print_banner() {
-    cprint!(
-        "<#fff2e0>
+const TITLE_BANNER: &str = "
 ███╗   ██╗██╗     ██████╗                                    
 ████╗  ██║██║     ╚════██╗                                   
 ██╔██╗ ██║██║      █████╔╝                                   
@@ -63,6 +65,22 @@ pub fn print_banner() {
 ██║     ██║  ██║██║ ╚████║███████╗███████╗                   
 ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝                   
                                                              
-    </>"
-    );
-}
+";
+
+const INSTRUCTIONS: &str = "
+    1.      Enter the url above in the browser of the mobile device
+            you want to control the coasters from
+            (device has to be in the same network as this PC)
+    
+    2.      On this website, press on the connect button
+
+    3.      If you see the panel, you can start NoLimits / RideSims
+            as normal, leaving this application running in the background
+
+    4.      Make sure that you activate the panel with the key in the top left
+            and that you set the coasters on 'manual dispatch'
+
+            Have fun :D
+
+
+";
